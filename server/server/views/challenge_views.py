@@ -26,8 +26,6 @@ def create_challenge(request):
                 challenge=challenge
             )
             created_badges.append(badge.id)
-
-        badge_serializer = BadgeSerializer(created_badges, many=True)
         return Response({"message": "Wyzwanie utworzone!",
                          "challenge_id": challenge.id,
                          "title": challenge.name,
