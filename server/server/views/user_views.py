@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..serializers.auth_serializers import PasswordResetSerializer, User, CustomTokenObtainPairSerializer
 from ..serializers.follow_serializers import FollowSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenViewBase
 from rest_framework.exceptions import ValidationError
 from ..services.follow_service import follow_user_service, get_following_service, get_followers_service, unfollow_user_service
@@ -18,6 +18,7 @@ def get_user(request):
     return Response(data)
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def sign_up(request):
     try:
         user = sign_up_service(request.data)
@@ -28,6 +29,7 @@ def sign_up(request):
         return Response(e.detail,status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def reset_password(request):
     serializer = PasswordResetSerializer(data=request.data)
     if serializer.is_valid():
