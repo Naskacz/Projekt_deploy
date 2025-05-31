@@ -65,7 +65,7 @@ class Badge(models.Model):
     type = models.CharField(max_length=50, choices=BADGE_TYPES)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     def __str__(self):
-        return self.name
+        return self.type
     
 class UserBadge(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='badges')
