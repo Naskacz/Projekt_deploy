@@ -32,7 +32,9 @@ from .views.challenge_views import (
     create_challenge,
     list_challenges,
     list_user_challenges,
-    list_user_praticipate_challenges
+    list_user_praticipate_challenges,
+    list_user_friends_challenges,
+    list_all_public_challenges
 )
 from .views.userbadge_views import get_user_badges
 
@@ -45,7 +47,7 @@ from .views.challengeprogress_views import (
     create_challenge_progress,
     increment_progress,
     activate_or_deactivate_challenge,
-    get_user_challenge_progress
+    list_user_challenge_progresses
     )
 
 from .views.comment_views import (
@@ -103,5 +105,8 @@ urlpatterns = [
   
     path('api/activate_or_deactivate_challenge/', activate_or_deactivate_challenge, name='activate_or_deactivate_challenge'),
     path('api/', include(router.urls)),
-    path('api/challenge-progress/<int:challenge_id>/', get_user_challenge_progress, name='get_user_challenge_progress'),
+    path('api/my-challenges-progress/', list_user_challenge_progresses, name='my_challenges_progress'),
+    path('api/my-friends-challenges/', list_user_friends_challenges, name='my_friends_challenges'),
+    path('api/my-challenges-participate/', list_user_praticipate_challenges, name='my_challenges_participate'),
+    path('api/list_all_public_challenges/', list_all_public_challenges, name='list_public_challenges'),
 ]
