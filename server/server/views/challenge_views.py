@@ -53,3 +53,24 @@ def list_user_praticipate_challenges(request):
     ).distinct().order_by('name')
     serializer = ChallengeSerializer(challenges, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_user_friends_challenges(request):
+    user = request.user
+    followed_users = user.following.all()
+    friends_challenges = Challenge.objects.filter(
+        creator__in=followed_users
+    ).distinct().order_by('-create_date')
+
+    serializer = ChallengeSerializer(friends_challenges, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_all_public_challenges(request):
+    public_challenges = Challenge.objects.filter(
+        is_public=True
+    ).order_by('-create_date')
+    serializer = ChallengeSerializer(public_challenges, many=True)
+    return Response(serializer.data)
