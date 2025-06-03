@@ -50,6 +50,7 @@ from .views.challengeprogress_views import (
 from .views.comment_views import (
     post_comment,
     delete_comment,
+    get_comments
     )
 
 from .views.like_views import (
@@ -94,6 +95,7 @@ urlpatterns = [
     path('api/list_user_posts/<str:username>/', list_user_posts, name='list_user_posts'),
     path('api/<int:post_id>/comment/', post_comment, name='post_comment'),
     path('api/<int:comment_id>/uncomment/', delete_comment, name='delete_comment'),
+    path('api/<int:post_id>/comments/', get_comments, name='get_comments'),
     path('api/<int:post_id>/like/', post_like, name='post_like'),
     path('api/<int:post_id>/unlike/', delete_like, name='delete_like'),
     path('api/posts/post_counts', post_counts, name='post_counts'),
