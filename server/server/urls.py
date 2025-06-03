@@ -44,7 +44,8 @@ from .views.post_views import(
 from .views.challengeprogress_views import (
     create_challenge_progress,
     increment_progress,
-    activate_or_deactivate_challenge
+    activate_or_deactivate_challenge,
+    get_user_challenge_progress
     )
 
 from .views.comment_views import (
@@ -101,5 +102,6 @@ urlpatterns = [
     path('api/posts/post_counts', post_counts, name='post_counts'),
   
     path('api/activate_or_deactivate_challenge/', activate_or_deactivate_challenge, name='activate_or_deactivate_challenge'),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('api/challenge-progress/<int:challenge_id>/', get_user_challenge_progress, name='get_user_challenge_progress'),
 ]

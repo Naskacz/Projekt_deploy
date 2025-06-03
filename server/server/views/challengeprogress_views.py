@@ -85,3 +85,19 @@ def activate_or_deactivate_challenge(request):
         'success': True,
         'is_active': progress.is_active,
     }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_challenge_progress(request, challenge_id):
+    try:
+        challenge = Challenge.objects.get(id=challenge_id)
+    except Challenge.DoesNotExist:
+        return Response({'error': 'Nie znaleziono wyzwania'}, status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        progress = ChallengeProgress.objects.get(user=request.user, challenge=challenge)
+    except ChallengeProgress.DoesNotExist:
+        return Response({'error': 'Nie znaleziono postępu dla tego wyzwania'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ChallengeProgressSerializer(progress)
+    return Response(serializer.data, status=status.HTTP_200_OK)

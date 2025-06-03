@@ -70,7 +70,7 @@ class Badge(models.Model):
 class UserBadge(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='badges')
     badge = models.ForeignKey(Badge, on_delete=models.CASCADE)
-    awarded_date = models.DateField(auto_now_add=True)
+    awarded_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('user', 'badge')
@@ -78,7 +78,7 @@ class UserBadge(models.Model):
 class Post(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
-    create_date = models.DateField(default=datetime.date.today)
+    create_date = models.DateTimeField(default=datetime.datetime.now)
     user_badge = models.ForeignKey(UserBadge, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=True)
 
@@ -86,7 +86,7 @@ class Comment(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     description = models.TextField()
-    create_date = models.DateField(default=datetime.date.today)
+    create_date = models.DateTimeField(default=datetime.datetime.now)
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -96,7 +96,7 @@ class Like(models.Model):
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    create_date = models.DateField(default=datetime.date.today)
+    create_date = models.DateTimeField(default=datetime.datetime.now)
     is_read = models.BooleanField(default=False)
     message = models.TextField()
     notification_type = models.CharField(max_length=50)
