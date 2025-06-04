@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 import datetime
 from django.utils import timezone
 
+def get_local_date():
+    return timezone.localtime().date()
 
 class User(AbstractUser):
     first_name = None
@@ -13,7 +15,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
     username = models.CharField(max_length=50, unique=True)
-    join_date = models.DateField(default=timezone.localdate, blank=True)
+    join_date = models.DateField(default=get_local_date, blank=True)
     following = models.ManyToManyField('self', symmetrical=False, related_name="followers", blank=True)
 
     USERNAME_FIELD = 'email'
@@ -29,7 +31,7 @@ class Challenge(models.Model):
     frequency = models.IntegerField(default=1)
     duration = models.IntegerField(default=30)
     is_public = models.BooleanField(default=False)
-    create_date = models.DateField(default=timezone.localdate)
+    create_date = models.DateField(default=get_local_date)
     creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True, related_name='created_challenges')
     def __str__(self):
         return self.name
@@ -38,8 +40,8 @@ class ChallengeProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     progress = models.IntegerField(default=0)
-    start_date = models.DateField(default=timezone.localdate)
-    last_updated = models.DateField(default=timezone.localdate)
+    start_date = models.DateField(default=get_local_date)
+    last_updated = models.DateField(default=get_local_date)
     is_active = models.BooleanField(default=True)
     streak = models.IntegerField(default=0)
     
