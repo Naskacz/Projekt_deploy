@@ -63,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+TIME_ZONE = 'Europe/Warsaw'
+USE_TZ = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
