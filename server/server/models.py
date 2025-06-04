@@ -41,7 +41,7 @@ class ChallengeProgress(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     progress = models.IntegerField(default=0)
     start_date = models.DateField(default=get_local_date)
-    last_updated = models.DateField(default=get_local_date)
+    last_updated = models.DateField(auto_now=True)
     is_active = models.BooleanField(default=True)
     streak = models.IntegerField(default=0)
     
