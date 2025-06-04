@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import datetime
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -12,7 +13,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
     username = models.CharField(max_length=50, unique=True)
-    join_date = models.DateField(default=datetime.date.today, blank=True)
+    join_date = models.DateField(default=timezone.localdate, blank=True)
     following = models.ManyToManyField('self', symmetrical=False, related_name="followers", blank=True)
 
     USERNAME_FIELD = 'email'
@@ -28,7 +29,7 @@ class Challenge(models.Model):
     frequency = models.IntegerField(default=1)
     duration = models.IntegerField(default=30)
     is_public = models.BooleanField(default=False)
-    create_date = models.DateField(default=datetime.date.today)
+    create_date = models.DateField(default=timezone.localdate)
     creator = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, blank=True, related_name='created_challenges')
     def __str__(self):
         return self.name
@@ -37,8 +38,8 @@ class ChallengeProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     progress = models.IntegerField(default=0)
-    start_date = models.DateField(default=datetime.date.today)
-    last_updated = models.DateField(default=datetime.date.today)
+    start_date = models.DateField(default=timezone.localdate)
+    last_updated = models.DateField(default=timezone.localdate)
     is_active = models.BooleanField(default=True)
     streak = models.IntegerField(default=0)
     
@@ -78,7 +79,7 @@ class UserBadge(models.Model):
 class Post(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
-    create_date = models.DateTimeField(default=datetime.datetime.now)
+    create_date = models.DateTimeField(default=timezone.now)
     user_badge = models.ForeignKey(UserBadge, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=True)
 
@@ -86,7 +87,7 @@ class Comment(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     description = models.TextField()
-    create_date = models.DateTimeField(default=datetime.datetime.now)
+    create_date = models.DateTimeField(default=timezone.now)
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -96,7 +97,7 @@ class Like(models.Model):
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    create_date = models.DateTimeField(default=datetime.datetime.now)
+    create_date = models.DateTimeField(default=timezone.now)
     is_read = models.BooleanField(default=False)
     message = models.TextField()
     notification_type = models.CharField(max_length=50)

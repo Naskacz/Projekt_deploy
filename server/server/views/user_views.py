@@ -9,6 +9,8 @@ from rest_framework.exceptions import ValidationError
 from ..services.follow_service import follow_user_service, get_following_service, get_followers_service, unfollow_user_service
 from ..services.user_service import sign_up_service, get_user_by_username
 from ..serializers.user_serializers import UserProfileSerializer
+from ..services.challenge_service import get_common_challenges
+from ..serializers.challenge_serializers import ChallengeSerializer
 class CustomTokenObtainPairView(TokenViewBase):
     serializer_class = CustomTokenObtainPairSerializer
 
@@ -80,7 +82,12 @@ def unfollow_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_userprofile_data(request, username):
     user = get_user_by_username(username)
-    serializer = UserProfileSerializer(user)
-    return Response(serializer.data)
+    common_challenges = get_common_challenges(request.user, user)
+    challenges_serializer = ChallengeSerializer(common_challenges, many=True)
+    profile_serializer = UserProfileSerializer(user)
+    return Response({
+        'profile': profile_serializer.data,
+        'common_challenges': challenges_serializer.data })
