@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ..models import ChallengeProgress
-from server.models import ChallengeProgress
+
 
 class ChallengeProgressSerializer(serializers.ModelSerializer):
     class Meta:

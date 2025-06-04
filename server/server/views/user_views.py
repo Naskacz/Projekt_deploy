@@ -11,6 +11,8 @@ from ..services.user_service import sign_up_service, get_user_by_username
 from ..serializers.user_serializers import UserProfileSerializer
 from ..services.challenge_service import get_common_challenges
 from ..serializers.challenge_serializers import ChallengeSerializer
+from ..serializers.challengeprogress_serializers import ChallengeProgressSerializer
+from ..models import ChallengeProgress
 class CustomTokenObtainPairView(TokenViewBase):
     serializer_class = CustomTokenObtainPairSerializer
 
@@ -86,8 +88,11 @@ def unfollow_user(request):
 def get_userprofile_data(request, username):
     user = get_user_by_username(username)
     common_challenges = get_common_challenges(request.user, user)
+    challenge_progress = ChallengeProgress.objects.filter(user=user, challenge__in=common_challenges)
     challenges_serializer = ChallengeSerializer(common_challenges, many=True)
     profile_serializer = UserProfileSerializer(user)
+    challenge_prprogress_serializer = ChallengeProgressSerializer(challenge_progress, many=True)
     return Response({
         'profile': profile_serializer.data,
-        'common_challenges': challenges_serializer.data })
+        'common_challenges': challenges_serializer.data,
+        'challenge_progress': challenge_prprogress_serializer.data})
