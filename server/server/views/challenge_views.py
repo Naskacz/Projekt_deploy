@@ -47,7 +47,7 @@ def list_user_challenges(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def list_user_praticipate_challenges(request):
+def list_user_participate_challenges(request):
     challenges = Challenge.objects.filter(
     challengeprogress__user=request.user
     ).distinct().order_by('name')

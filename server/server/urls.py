@@ -32,7 +32,7 @@ from .views.challenge_views import (
     create_challenge,
     list_challenges,
     list_user_challenges,
-    list_user_praticipate_challenges,
+    list_user_participate_challenges,
     list_user_friends_challenges,
     list_all_public_challenges
 )
@@ -82,7 +82,7 @@ urlpatterns = [
     path('api/create_challenge/', create_challenge, name='create_challenge'),
     path('api/list_challenges/', list_challenges, name='list_challenges'),
     path('api/my-challenges/', list_user_challenges, name='my_challenges'),
-    path('api/my-challenges-participate/', list_user_praticipate_challenges, name='my_challenges_participate'),
+    path('api/my-challenges-participate/', list_user_participate_challenges, name='my_challenges_participate'),
 
     path('api/userprofile/<str:username>/', get_userprofile_data, name='get_userprofile_data'),
     path('api/get_followers/<str:username>/', get_followers, name='get_followers'),
@@ -107,6 +107,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/my-challenges-progress/', list_user_challenge_progresses, name='my_challenges_progress'),
     path('api/my-friends-challenges/', list_user_friends_challenges, name='my_friends_challenges'),
-    path('api/my-challenges-participate/', list_user_praticipate_challenges, name='my_challenges_participate'),
     path('api/list_all_public_challenges/', list_all_public_challenges, name='list_public_challenges'),
 ]
