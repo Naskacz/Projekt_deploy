@@ -44,7 +44,10 @@ def increment_progress(request):
     now = timezone.now().date()
     last = progress.last_updated
     freq = progress.challenge.frequency
-
+    days_since_last = (now - last).days
+    if days_since_last < freq:
+        return Response({'error': f'Postęp można aktualizować co {freq} dni. Pozostało {freq - days_since_last} dni.'},
+                        status=status.HTTP_400_BAD_REQUEST)
     # Wyliczenie streak:  
     if (now - last).days == freq:
         progress.streak += freq
