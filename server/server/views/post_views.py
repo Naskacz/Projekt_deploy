@@ -22,7 +22,7 @@ def post_counts(request):
     posts = Post.objects.annotate(
         comment_count=Count('comment'),
         like_count=Count('like')
-    )
+    ).order_by('-create_date')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
 
