@@ -25,7 +25,7 @@ def award_badges_for_progress(progress: ChallengeProgress):
                 badge = Badge.objects.get(type='halfway_there', challenge=challenge)
                 created, _ = UserBadge.objects.get_or_create(user=user, badge=badge)
                 if created:
-                    notif = Notification.objects.create(user=user, message=f"Gratulacje! Zdobyłeś odznakę: {badge.name}", notification_type='badge_awarded')
+                    notif = Notification.objects.create(user=user, message=f"Gratulacje! Zdobyłeś odznakę: {badge.type} {badge.challenge.name}", notification_type='badge_awarded')
             except Badge.DoesNotExist:
                 pass
 
