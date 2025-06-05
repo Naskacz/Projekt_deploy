@@ -2,9 +2,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from ..models import Challenge, ChallengeProgress
+from ..models import Challenge, ChallengeProgress, get_local_date
 from ..serializers.challengeprogress_serializers import ChallengeProgressSerializer  # popraw, jeśli masz inną ścieżkę
 from ..services.badge_service import award_badges_for_progress
+
 
 from django.utils import timezone
 from datetime import timedelta
@@ -41,7 +42,7 @@ def increment_progress(request):
     except ChallengeProgress.DoesNotExist:
         return Response({'error': 'Nie znaleziono postępu'}, status=status.HTTP_404_NOT_FOUND)
 
-    now = timezone.now().date()
+    now = get_local_date()
     last = progress.last_updated
     freq = progress.challenge.frequency
     days_since_last = (now - last).days
