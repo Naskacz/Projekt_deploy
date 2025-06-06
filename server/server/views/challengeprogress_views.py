@@ -5,6 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from ..models import Challenge, ChallengeProgress, get_local_date
 from ..serializers.challengeprogress_serializers import ChallengeProgressSerializer  # popraw, jeśli masz inną ścieżkę
 from ..services.badge_service import award_badges_for_progress
+from django.db.models import Count
+
 
 
 from django.utils import timezone
@@ -100,4 +102,12 @@ def list_user_challenge_progresses(request):
     user = request.user
     progresses = ChallengeProgress.objects.filter(user=user)
     serializer = ChallengeProgressSerializer(progresses, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_count_progress(request):
+    user = request.user
+    response = ChallengeProgress.objects.filter(user=user).values('last_updated').annotate(count=Count('id')).order_by('last_updated')
+    serializer = ChallengeProgressSerializer(response, many=True)
     return Response(serializer.data)

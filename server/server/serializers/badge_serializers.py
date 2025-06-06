@@ -4,4 +4,4 @@ from server.models import Badge
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Badge
-        fields = ['id', 'name', 'description', 'type', 'challenge']
+        fields = ['id', 'type', 'challenge']
