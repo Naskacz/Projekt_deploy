@@ -47,13 +47,15 @@ from .views.challengeprogress_views import (
     create_challenge_progress,
     increment_progress,
     activate_or_deactivate_challenge,
-    list_user_challenge_progresses
+    list_user_challenge_progresses,
+    get_count_progress
     )
 
 from .views.comment_views import (
     post_comment,
     delete_comment,
-    get_comments
+    get_comments,
+    
     )
 
 from .views.like_views import (
@@ -89,7 +91,6 @@ urlpatterns = [
     path('api/get_following/<str:username>/', get_following, name='get_following'),
   
     path('api/users/<str:username>/badges/', get_user_badges, name='user_badges'),
-  
     path('api/challenge-progress/create/', create_challenge_progress, name='challenge-progress-create'),
     path('api/increment_progress/', increment_progress, name='increment_progress'),
 
@@ -108,4 +109,5 @@ urlpatterns = [
     path('api/my-challenges-progress/', list_user_challenge_progresses, name='my_challenges_progress'),
     path('api/my-friends-challenges/', list_user_friends_challenges, name='my_friends_challenges'),
     path('api/list_all_public_challenges/', list_all_public_challenges, name='list_public_challenges'),
+    path('api/get_count_progress/', get_count_progress, name='get_count_progress'),
 ]
