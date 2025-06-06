@@ -42,6 +42,10 @@ def increment_progress(request):
     except ChallengeProgress.DoesNotExist:
         return Response({'error': 'Nie znaleziono postępu'}, status=status.HTTP_404_NOT_FOUND)
 
+    if progress.percent_complete >= 100:
+        progress.is_active = False
+        progress.save()
+        return Response({'error': 'Wyzwanie już ukończone.'}, status=status.HTTP_400_BAD_REQUEST)
     now = get_local_date()
     last = progress.last_updated
     freq = progress.challenge.frequency
