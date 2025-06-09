@@ -71,30 +71,43 @@ router = DefaultRouter()
 router.register(r'notifications', NotificationViewSet, basename='notifications')
 
 urlpatterns = [
+    #admin
+    path('admin/', admin.site.urls),
+    
+    #autoryzacja/jwt/logowanie
     path('api-auth/', include('rest_framework.urls')),
-
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('admin/', admin.site.urls),
-    path('api/get_user/', get_user, name='get_user'),
     path('api/signup/', sign_up, name='sign_up'),
     path('api/reset_password/', reset_password, name='reset_password'),
+
+    #użytkownicy
+    path('api/get_user/', get_user, name='get_user'),
     path('api/follow_user/', follow_user, name='follow_user'),
     path('api/unfollow_user/', unfollow_user, name='unfollow_user'),
+    path('api/userprofile/<str:username>/', get_userprofile_data, name='get_userprofile_data'),
+    path('api/get_followers/<str:username>/', get_followers, name='get_followers'),
+    path('api/get_following/<str:username>/', get_following, name='get_following'),
+
+    #wyzwania
     path('api/create_challenge/', create_challenge, name='create_challenge'),
     path('api/list_challenges/', list_challenges, name='list_challenges'),
     path('api/my-challenges/', list_user_challenges, name='my_challenges'),
     path('api/my-challenges-participate/', list_user_participate_challenges, name='my_challenges_participate'),
+    path('api/activate_or_deactivate_challenge/', activate_or_deactivate_challenge, name='activate_or_deactivate_challenge'),
+    path('api/list_all_public_challenges/', list_all_public_challenges, name='list_public_challenges'),
+    path('api/my-friends-challenges/', list_user_friends_challenges, name='my_friends_challenges'),
 
-    path('api/userprofile/<str:username>/', get_userprofile_data, name='get_userprofile_data'),
-    path('api/get_followers/<str:username>/', get_followers, name='get_followers'),
-    path('api/get_following/<str:username>/', get_following, name='get_following'),
-  
-    path('api/users/<str:username>/badges/', get_user_badges, name='user_badges'),
+    #progres wyzwań
     path('api/challenge-progress/create/', create_challenge_progress, name='challenge-progress-create'),
     path('api/increment_progress/', increment_progress, name='increment_progress'),
+    path('api/get_count_progress/', get_count_progress, name='get_count_progress'),
+    path('api/my-challenges-progress/', list_user_challenge_progresses, name='my_challenges_progress'),
 
-    # post
+    #odznaki
+    path('api/users/<str:username>/badges/', get_user_badges, name='user_badges'),
+
+    #posty i komentarze
     path('api/posts/create_post/', create_post, name='create_post'),
     path('api/list_user_posts/<str:username>/', list_user_posts, name='list_user_posts'),
     path('api/<int:post_id>/comment/', post_comment, name='post_comment'),
@@ -104,10 +117,9 @@ urlpatterns = [
     path('api/<int:post_id>/unlike/', delete_like, name='delete_like'),
     path('api/posts/post_counts', post_counts, name='post_counts'),
   
-    path('api/activate_or_deactivate_challenge/', activate_or_deactivate_challenge, name='activate_or_deactivate_challenge'),
+    #powiadomienia
     path('api/', include(router.urls)),
-    path('api/my-challenges-progress/', list_user_challenge_progresses, name='my_challenges_progress'),
-    path('api/my-friends-challenges/', list_user_friends_challenges, name='my_friends_challenges'),
-    path('api/list_all_public_challenges/', list_all_public_challenges, name='list_public_challenges'),
-    path('api/get_count_progress/', get_count_progress, name='get_count_progress'),
+    
+    
+    
 ]
