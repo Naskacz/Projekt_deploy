@@ -17,7 +17,8 @@ class PostSerializer(serializers.ModelSerializer):
             'comment_count',
             'like_count',
         ]
-        read_only_fields = ['id', 'creator', 'create_date', 'comment_count', 'like_count']
+        fields = ['id', 'creator', 'name', 'description', 'user_badge', 'comment_count', 'like_count']
+        read_only_fields = ['id', 'creator', 'comment_count', 'like_count']
 
     def validate_user_badge(self, badge):
         user = self.context['request'].user

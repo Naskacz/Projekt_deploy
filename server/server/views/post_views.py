@@ -34,3 +34,36 @@ def create_post(request):
         serializer.save()  # creator is set in serializer.create()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_post(request, post_id):
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Ensure only the creator can delete the post
+    if request.user != post.creator:
+        return Response({'error': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
+
+    post.delete()
+    return Response({'message': 'Post deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def edit_post(request, post_id):
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.user != post.creator:
+        return Response({'error': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
+
+    serializer = PostSerializer(post, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
