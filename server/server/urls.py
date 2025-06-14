@@ -41,7 +41,9 @@ from .views.userbadge_views import get_user_badges
 from .views.post_views import(
     list_user_posts,
     post_counts,
-    create_post
+    create_post,
+    delete_post,
+    edit_post,
     )
 from .views.challengeprogress_views import (
     create_challenge_progress,
@@ -109,6 +111,8 @@ urlpatterns = [
 
     #posty i komentarze
     path('api/posts/create_post/', create_post, name='create_post'),
+    path('api/posts/<int:post_id>/delete/', delete_post, name='delete_post'),
+    path('api/posts/<int:post_id>/edit/', edit_post, name='edit_post'),
     path('api/list_user_posts/<str:username>/', list_user_posts, name='list_user_posts'),
     path('api/<int:post_id>/comment/', post_comment, name='post_comment'),
     path('api/<int:comment_id>/uncomment/', delete_comment, name='delete_comment'),
