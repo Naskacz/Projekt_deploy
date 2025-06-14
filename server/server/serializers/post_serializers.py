@@ -8,6 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'creator', 'name', 'description', 'user_badge', 'comment_count', 'like_count']
+        read_only_fields = ['id', 'creator', 'comment_count', 'like_count']
 
     def validate_user_badge(self, badge):
         user = self.context['request'].user
